@@ -1,81 +1,396 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DateDrop – Everything important. Already handled.</title>
-  <meta name="description" content="Turn messages, emails, and photos into calendar events. Review before saving." />
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: #ffffff;
-      color: #111;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 80px 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    h1 {
-      font-size: 48px;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    p {
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 24px;
-    }
-    .cta {
-      display: inline-block;
-      padding: 14px 22px;
-      background: linear-gradient(90deg, #7a1f7a, #e44b7f);
-      color: #fff;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    img {
-      width: 100%;
-      border-radius: 28px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-    footer {
-      text-align: center;
-      padding: 40px;
-      font-size: 14px;
-      color: #777;
-    }
-    @media (max-width: 900px) {
-      .container {
-        grid-template-columns: 1fr;
-        text-align: center;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DateDrop — Everything important. Already handled.</title>
+    <meta
+      name="description"
+      content="DateDrop turns messages, emails, PDFs, and photos into calendar events — with a quick review before anything is saved."
+    />
+
+    <style>
+      :root{
+        --bg:#f3f4f6;              /* light grey */
+        --text:#111827;
+        --muted:#4b5563;
+        --muted2:#6b7280;
+        --card:#ffffff;
+        --border:rgba(17,24,39,.08);
+        --shadow:0 16px 40px rgba(17,24,39,.10);
+        --radius:24px;
+
+        /* DateDrop-ish purple/pink */
+        --grad1:#6b1b6a;
+        --grad2:#c43c86;
+        --cta1:#8b1d88;
+        --cta2:#d63b7d;
       }
-    }
-  </style>
-</head>
-<center></center><body>
 
-  <div class="container">
-    <div>
-      <h1>Everything important.<br>Already handled.</h1>
-      <p>Turn messages, emails, PDFs, and photos into calendar events — with a quick review before anything is saved.</p>
-      <a class="cta" href="#">Download on the App Store</a>
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        color:var(--text);
+        background:var(--bg);
+      }
+
+      .wrap{
+        max-width:1100px;
+        margin:0 auto;
+        padding:28px 20px 60px;
+      }
+
+      header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:16px;
+        margin-bottom:24px;
+      }
+
+      .brand{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        font-weight:800;
+        letter-spacing:-.02em;
+      }
+      .logo{
+        width:34px;height:34px;border-radius:10px;
+        background:linear-gradient(135deg,var(--grad1),var(--grad2));
+        display:grid;place-items:center;
+        color:white;font-weight:900;
+        box-shadow:0 10px 18px rgba(0,0,0,.10);
+      }
+
+      .nav{
+        display:flex;
+        align-items:center;
+        gap:18px;
+        color:var(--muted2);
+        font-size:14px;
+      }
+      .nav a{
+        color:inherit;
+        text-decoration:none;
+      }
+      .nav a:hover{color:var(--text)}
+      .pill{
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        padding:12px 16px;
+        border-radius:999px;
+        background:linear-gradient(90deg,var(--cta1),var(--cta2));
+        color:white;
+        font-weight:700;
+        text-decoration:none;
+        box-shadow:0 14px 26px rgba(198,60,134,.25);
+        white-space:nowrap;
+      }
+
+      .hero{
+        display:grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap:42px;
+        align-items:center;
+        padding:34px 0 10px;
+      }
+
+      h1{
+        font-size:56px;
+        line-height:1.02;
+        margin:0 0 14px;
+        letter-spacing:-.03em;
+      }
+      .sub{
+        font-size:18px;
+        line-height:1.5;
+        color:var(--muted);
+        margin:0 0 18px;
+        max-width:560px;
+      }
+
+      .ctaRow{
+        display:flex;
+        gap:14px;
+        align-items:center;
+        flex-wrap:wrap;
+        margin-top:16px;
+      }
+
+      .note{
+        font-size:13px;
+        color:var(--muted2);
+      }
+
+      .phoneCard{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        box-shadow:var(--shadow);
+        padding:18px;
+      }
+
+      .phoneFrame{
+        width:100%;
+        border-radius:22px;
+        overflow:hidden;
+        background:#111827;
+        aspect-ratio: 9 / 19.5;
+        display:grid;
+        place-items:center;
+      }
+      .phoneFrame img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        display:block;
+      }
+      .imgFallback{
+        color:#e5e7eb;
+        padding:22px;
+        text-align:center;
+        font-size:14px;
+      }
+
+      .section{
+        margin-top:48px;
+      }
+      .sectionTitle{
+        font-size:34px;
+        margin:0 0 10px;
+        letter-spacing:-.02em;
+      }
+      .sectionSub{
+        color:var(--muted);
+        margin:0 0 18px;
+        max-width:720px;
+      }
+
+      .steps{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap:16px;
+      }
+
+      .step{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:22px;
+        box-shadow:0 10px 24px rgba(17,24,39,.06);
+        padding:18px 18px 16px;
+        min-height:130px;
+      }
+      .stepNum{
+        display:inline-flex;
+        width:28px;height:28px;
+        border-radius:10px;
+        background:linear-gradient(135deg,var(--grad1),var(--grad2));
+        color:white;
+        font-weight:800;
+        align-items:center;
+        justify-content:center;
+        font-size:13px;
+        margin-bottom:10px;
+      }
+      .step h3{
+        margin:0 0 6px;
+        font-size:18px;
+        letter-spacing:-.01em;
+      }
+      .step p{
+        margin:0;
+        color:var(--muted);
+        line-height:1.45;
+        font-size:15px;
+      }
+
+      .emailBox{
+        margin-top:18px;
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:22px;
+        box-shadow:0 10px 24px rgba(17,24,39,.06);
+        padding:18px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:14px;
+        flex-wrap:wrap;
+      }
+
+      .emailCopy{
+        min-width:260px;
+      }
+      .emailCopy h3{
+        margin:0 0 6px;
+        font-size:18px;
+        letter-spacing:-.01em;
+      }
+      .emailCopy p{
+        margin:0;
+        color:var(--muted);
+        font-size:14px;
+        line-height:1.45;
+      }
+
+      form{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        align-items:center;
+      }
+
+      input[type="email"]{
+        width:min(320px, 78vw);
+        padding:12px 14px;
+        border-radius:14px;
+        border:1px solid rgba(17,24,39,.14);
+        outline:none;
+        font-size:14px;
+      }
+      input[type="email"]:focus{
+        border-color: rgba(196,60,134,.55);
+        box-shadow: 0 0 0 6px rgba(196,60,134,.12);
+      }
+
+      button{
+        border:0;
+        cursor:pointer;
+        padding:12px 16px;
+        border-radius:14px;
+        background:linear-gradient(90deg,var(--cta1),var(--cta2));
+        color:white;
+        font-weight:800;
+        font-size:14px;
+        box-shadow:0 14px 26px rgba(198,60,134,.20);
+      }
+
+      .foot{
+        text-align:center;
+        margin-top:56px;
+        color:var(--muted2);
+        font-size:13px;
+      }
+
+      .tinyLinks{
+        display:flex;
+        justify-content:center;
+        gap:14px;
+        margin-top:10px;
+      }
+      .tinyLinks a{
+        color:var(--muted2);
+        text-decoration:none;
+      }
+      .tinyLinks a:hover{color:var(--text)}
+
+      @media (max-width: 900px){
+        .hero{grid-template-columns: 1fr; gap:22px;}
+        h1{font-size:44px;}
+        .steps{grid-template-columns:1fr;}
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo">D</div>
+          <div>DateDrop</div>
+        </div>
+
+        <nav class="nav">
+          <a href="#how">How it works</a>
+          <a href="#android">Android</a>
+          <!-- Replace # with your App Store link when live -->
+          <a class="pill" href="#" aria-label="Download on the App Store">Download on the App Store</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h1>Everything important.<br/>Already handled.</h1>
+          <p class="sub">
+            Turn messages, emails, PDFs, and photos into calendar events — with a quick review before anything is saved.
+          </p>
+
+          <div class="ctaRow">
+            <!-- Replace # with your App Store link when live -->
+            <a class="pill" href="#">Download on the App Store</a>
+            <span class="note">No account. Privacy-first. Built with care in Wendover.</span>
+          </div>
+        </div>
+
+        <div class="phoneCard">
+          <div class="phoneFrame">
+            <!-- Put your screenshot in the repo and point to it here -->
+            <img src="assets/screen1.png" alt="DateDrop app screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="imgFallback" style="display:none;">
+              Add your screenshot at <strong>assets/screen1.png</strong><br/>
+              (create an <strong>assets</strong> folder in the repo)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="section">
+        <h2 class="sectionTitle">How it works</h2>
+        <p class="sectionSub">
+          DateDrop finds the most common dates — you review and adjust before anything is added to your calendar.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="stepNum">1</div>
+            <h3>Add a source</h3>
+            <p>Paste a message, upload a PDF, or add a photo.</p>
+          </div>
+
+          <div class="step">
+            <div class="stepNum">2</div>
+            <h3>Review the dates</h3>
+            <p>Check titles, times, and details. Remove anything you don’t want.</p>
+          </div>
+
+          <div class="step">
+            <div class="stepNum">3</div>
+            <h3>Save to your calendar</h3>
+            <p>Choose where it goes. Edit or remove events anytime later.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="android" class="section">
+        <h2 class="sectionTitle">Android coming later</h2>
+        <p class="sectionSub">
+          Want a heads-up when DateDrop launches on Android?
+        </p>
+
+        <div class="emailBox">
+          <div class="emailCopy">
+            <h3>Get notified</h3>
+            <p>No spam. One email when it’s ready.</p>
+          </div>
+
+          <!-- This is a placeholder. To actually capture emails, you’ll need a form backend (see instructions below). -->
+          <form onsubmit="event.preventDefault(); alert('Saved! (Demo only — connect a form backend to collect emails.)');">
+            <input type="email" name="email" placeholder="Your email address" required />
+            <button type="submit">Notify me</button>
+          </form>
+        </div>
+      </section>
+
+      <footer class="foot">
+        Made with care in Wendover · Privacy-first · No accounts
+        <div class="tinyLinks">
+          <a href="#" onclick="alert('Add a privacy page link when ready.'); return false;">Privacy</a>
+          <a href="#" onclick="alert('Add a support email link when ready.'); return false;">Support</a>
+        </div>
+      </footer>
     </div>
-
-    <div>
-      <img src="screenshot.png" alt="DateDrop app screenshot" />
-    </div>
-  </div>
-
-  <footer>
-    Made with care in Wendover · Privacy-first · No accounts
-  </footer>
-
-</body></center>
+  </body>
 </html>
